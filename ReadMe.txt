@@ -18,7 +18,10 @@ Main_Data/
 ├── Subject2/
 │   ├── Subject2 base.xlsx
 │   ├── Subject2 vest.xlsx
-│   └── Subject2 hand.xlsx
+│   └── Subject2 anything.xlsx
 └─ ...
+
+Repeated Names will stored as 
+-> Gopal, Gopal_2, Gopal_2_3, Gopal_2_3_4
 
 All raw files will be saved in Raw_Data_Reservoir

@@ -1,9 +1,11 @@
 # %%
+
 import os
 import glob
 import pandas as pd
 import shutil
 
+# ! Files with same name in New_Raw_Data will be replaced in Raw_Data_Reservoir
 # * Copy raw files to Raw_Data_Reservoir and to Reservoir_Copy ✅
 # ? Names of Raw Data - subject_base, subject_vest, subject_hand
 # * Read files from Reservoir_Copy✅
@@ -17,7 +19,8 @@ New_Raw_Data = "New_Raw_Data"
 Raw_Data_Reservoir = "Raw_Data_Reservoir"
 Reservoir_Copy = "Wk_dir"
 Main_Data = "Main_Data"
-Subject_Dir = "Subeject_Dir"
+Subject_Dir = "Subject_Dir"
+Main_Excel = "Main_DB"
 
 
 # %%
@@ -30,7 +33,7 @@ def CopMov(New_Raw_Data, Raw_Data_Reservoir, Reservoir_Copy):
         shutil.copy2(f'./{New_Raw_Data}/{files}',
                      f'./{Raw_Data_Reservoir}/{files}')
         shutil.move(f'./{New_Raw_Data}/{files}',
-                    f'./{Reservoir_Copy}/{files}_copy')
+                    f'./{Reservoir_Copy}/{files}')
 
 # %%
 
@@ -53,6 +56,36 @@ def saveExcel(Reservoir_Copy, Save_loc):
 
 # %%
 
+# Check Subject Name in DB and get new Name
+
+
+def getName(SubName, names, z):
+    if SubName in names:
+        z = z + 1
+        SubName = SubName + f"_{z}"
+        return getName(SubName, names, z)
+    else:
+        return SubName
+
+
+def getNewNamefromDB(SubName, Main_Excel):
+    Main_df = pd.read_excel(f"{Main_Excel}.xlsx")
+    nameSeries = Main_df['Subject_Name'].squeeze()
+    names = nameSeries.tolist()
+    z = 1
+    NewSubName = getName(SubName, names, z)
+    return NewSubName
+
+# Save created Subject folder to DB
+
+
+def SaveNewSubtoDB(SubName, Main_Excel):
+    Main_df = pd.read_excel(f"{Main_Excel}.xlsx")
+    Main_df.loc[len(Main_df.index)] = [SubName, len(Main_df.index)+1]
+    Main_df.to_excel(f'{Main_Excel}.xlsx', index=False)
+
+# %%
+
 
 def creFol_saveXl(Main_Data, Reservoir_Copy):
     # * Save xlsx files to a folder named "Subject" in Main_Data
@@ -68,12 +101,14 @@ def creFol_saveXl(Main_Data, Reservoir_Copy):
 
     if chkList(sub_name_list) == True:
         # path
-        path = f'{Main_Data}/{sub_name_list[0]}'
+        NewName = getNewNamefromDB(sub_name_list[0], Main_Excel)
+        path = f'{Main_Data}/{NewName}'
         try:
             os.mkdir(path)
         except OSError as error:
             print(error)
         saveExcel(Reservoir_Copy, path)
+        SaveNewSubtoDB(NewName, Main_Excel)
         print("Equal")
 
     else:
@@ -88,7 +123,10 @@ def del_copy(Reservoir_Copy):
 
 
 # %%
+
 CopMov(New_Raw_Data, Raw_Data_Reservoir, Reservoir_Copy)
 creFol_saveXl(Main_Data, Reservoir_Copy)
 del_copy(Reservoir_Copy)
+
+
 # %%
