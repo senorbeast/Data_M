@@ -1,2 +1,6 @@
 __pycache__/
 dist/
+Main_Data/
+New_Raw_Data/
+Raw_Data_Reservoir/
+Subject_Dir/

@@ -24,4 +24,6 @@ Main_Data/
 Repeated Names will stored as 
 -> Gopal, Gopal_2, Gopal_2_3, Gopal_2_3_4
 
+!!! Will Require a minimum of 2 names in DB to work properly 
+
 All raw files will be saved in Raw_Data_Reservoir
