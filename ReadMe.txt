@@ -1,7 +1,7 @@
 # Instructions
 
 Run the Organise.bat after ALL subject1 files (2-4 files) are in the New_Raw_Data folder
-Name your raw files as "subject1 base", "subject1 vest".... the inbetween space is necessary 
+Name your raw files as "subject1 base", "subject1 vest", "subject1 anything", "subject1 anything anything".... the inbetween space is necessary 
 
 
 

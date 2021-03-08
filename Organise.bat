@@ -1,2 +1,2 @@
-@ECHO OFF
+@ECHO ON
 python main.py
