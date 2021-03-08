@@ -13,10 +13,42 @@ Graphs_Dir = "Graphs_Dir"
 
 def plotit(fileat, fileName):
     df = pd.read_excel(fileat + fileName)
-    df.plot(subplots=True, figsize=(30, 15), grid=True)
-    plt.legend(loc="best")
     newName = fileName.replace(".xlsx", '')
-    plt.savefig(f"{fileat}/{newName}.png", bbox_inches='tight')
+    path = f"{fileat}/{newName}"
+    try:
+        os.mkdir(path)
+        X1 = df.iloc[:, :6]
+        X2 = df.iloc[:, 6:12]
+        xSca = np.linspace(0, len(df), len(df))
+
+        #print(len(df['Channel 13']), len(xSca))
+        plt.figure(1)
+        plt.figure(figsize=(30, 15))
+        plt.scatter(xSca, df['Channel 13'], s=7)
+        plt.grid(True)
+        plt.savefig(f"{path}/Channel13.png", bbox_inches='tight')
+        plt.figure(2)
+        plt.figure(figsize=(30, 15))
+        plt.scatter(xSca, df['Channel 14'], s=7)
+        plt.grid(True)
+        plt.savefig(f"{path}/Channel14.png", bbox_inches='tight')
+        plt.figure(5)
+        plt.figure(figsize=(30, 15))
+        plt.scatter(xSca, df['Channel 13'], s=7)
+        plt.scatter(xSca, df['Channel 14'], s=7)
+        plt.grid(True)
+        plt.savefig(f"{path}/Combine13-14.png", bbox_inches='tight')
+        plt.figure(3)
+        X1.plot(subplots=True, figsize=(30, 15), grid=True,)
+        plt.legend(loc="best")
+        plt.savefig(f"{path}/1-6.png", bbox_inches='tight')
+        plt.figure(4)
+        X2.plot(subplots=True, figsize=(30, 15), grid=True)
+        plt.legend(loc="best")
+        plt.savefig(f"{path}/6-12.png", bbox_inches='tight')
+
+    except OSError as error:
+        print(error)
 
 
 def SaveGraphs(Main_Excel, Main_Data, Graphs_Dir):
