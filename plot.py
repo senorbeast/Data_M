@@ -12,11 +12,12 @@ import numpy as np
 import pandas as pd
 from matplotlib.pyplot import figure
 import matplotlib.pyplot as plt
+import time
 # %matplotlib inline
 
 # %%
 # Commented out IPython magic to ensure Python compatibility.
-
+begin = time.time()
 fileat = './Main_Data/kasturi/'
 df = pd.read_excel(fileat + 'kasturi vest cog.xlsx')
 print(len(df))
@@ -27,22 +28,17 @@ xSca = np.linspace(0, len(df), len(df))
 print(len(df['Channel 13']), len(xSca))
 plt.figure(1)
 plt.scatter(xSca, df['Channel 13'], s=0.4)
-plt.savefig(f"Channel13.png", bbox_inches='tight')
-plt.figure(2)
-plt.scatter(xSca, df['Channel 14'], s=0.4)
-plt.savefig(f"Channel14.png", bbox_inches='tight')
-plt.figure(5)
-plt.scatter(xSca, df['Channel 13'], s=0.4)
-plt.scatter(xSca, df['Channel 14'], s=0.4)
-plt.savefig(f"Combine.png", bbox_inches='tight')
+#plt.title("Linear graph")
+end = time.time()
 plt.figure(3)
-X1.plot(subplots=True, figsize=(30, 15), grid=True,)
-plt.legend(loc="best")
-plt.savefig(f"1-6.png", bbox_inches='tight')
-plt.figure(4)
-X2.plot(subplots=True, figsize=(30, 15), grid=True)
-plt.legend(loc="best")
-plt.savefig(f"6-12.png", bbox_inches='tight')
+px1 = X1.plot(subplots=True, figsize=(30, 15),
+              grid=True, title=f"_1-6", use_index=True, legend=True)[0]
+fig = px1.get_figure()
+fig.tight_layout()
+fig.subplots_adjust(top=0.95)
+#plt.savefig(f"1-6.png", bbox_inches='tight')
+plt.show()
+print(f"Time Taken {end-begin}")
 
 
 # %%
