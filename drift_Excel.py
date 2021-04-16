@@ -1,7 +1,7 @@
 # %%
 import os
 import pandas as pd
-
+import time
 # %%
 
 Subject_Dir = "Subject_Dir"
@@ -17,7 +17,8 @@ def drift(df, chlNo):
 def calc_drift(Sub_ID):
     # Files in Subject ID
     Flist = os.listdir(f"./{Subject_Dir}/{Sub_ID}")
-    Drift_df = pd.read_excel(f'{Drifts_DB}.xlsx')
+    Drift_df = pd.read_excel(f'{Drifts_DB}.xlsx', engine="openpyxl")
+
     # Just initialized to zero (if any problem then 0 will be used)
     hb_1, hb_2, hb_3, hb_4, hb_5, hb_6 = 0, 0, 0, 0, 0, 0
     hc_1, hc_2, hc_3, hc_4, hc_5, hc_6 = 0, 0, 0, 0, 0, 0
@@ -29,15 +30,15 @@ def calc_drift(Sub_ID):
             Main_df = pd.read_excel(f"./{Subject_Dir}/{Sub_ID}/{i}")
             hb_1, hb_2, hb_3, hb_4, hb_5, hb_6 = drift(Main_df, 'Channel 2'), drift(Main_df, 'Channel 3'), drift(
                 Main_df, 'Channel 4'), drift(Main_df, 'Channel 6'), drift(Main_df, 'Channel 7'), drift(Main_df, 'Channel 8')
-        if (i == f"{Sub_ID} handcog.xlsx"):
+        elif (i == f"{Sub_ID} handcog.xlsx"):
             Main_df = pd.read_excel(f"./{Subject_Dir}/{Sub_ID}/{i}")
             hc_1, hc_2, hc_3, hc_4, hc_5, hc_6 = drift(Main_df, 'Channel 2'), drift(Main_df, 'Channel 3'), drift(
                 Main_df, 'Channel 4'), drift(Main_df, 'Channel 6'), drift(Main_df, 'Channel 7'), drift(Main_df, 'Channel 8')
-        if (i == f"{Sub_ID} vestbase.xlsx"):
+        elif (i == f"{Sub_ID} vestbase.xlsx"):
             Main_df = pd.read_excel(f"./{Subject_Dir}/{Sub_ID}/{i}")
             vb_1, vb_2, vb_3, vb_4, vb_5, vb_6 = drift(Main_df, 'Channel 2'), drift(Main_df, 'Channel 3'), drift(
                 Main_df, 'Channel 4'), drift(Main_df, 'Channel 6'), drift(Main_df, 'Channel 7'), drift(Main_df, 'Channel 8')
-        if (i == f"{Sub_ID} vestcog.xlsx"):
+        elif (i == f"{Sub_ID} vestcog.xlsx"):
             Main_df = pd.read_excel(f"./{Subject_Dir}/{Sub_ID}/{i}")
             vc_1, vc_2, vc_3, vc_4, vc_5, vc_6 = drift(Main_df, 'Channel 2'), drift(Main_df, 'Channel 3'), drift(
                 Main_df, 'Channel 4'), drift(Main_df, 'Channel 6'), drift(Main_df, 'Channel 7'), drift(Main_df, 'Channel 8')
@@ -55,5 +56,8 @@ def calc_drift(Sub_ID):
 if __name__ == '__main__':
     Slist = os.listdir(f"{Subject_Dir}")
     for i in Slist:
+        print(f"-> Calculating Drift for {i}")
+        begin = time.time()
         calc_drift(i)
-        print(f"Done {i}")
+        end = time.time()
+        print(f"        {round(end-begin,4)} secs")
